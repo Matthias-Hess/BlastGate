@@ -40,6 +40,8 @@ void setup()
   pinMode(pin_led_green, OUTPUT);
   pinMode(pin_led_red, OUTPUT);
   Serial.begin(9600);
+
+  delay(1000);
 }
 
 void loop()
@@ -51,23 +53,36 @@ void loop()
   {
     case automatic:
       if(isMachineRunning())
-        closeGate();
-      else
+      {
         openGate();
+        turnDustExtractorOn();
+      }
+      else
+      {
+        turnDustExtractorOff();
+        closeGate();
+      }
       break;
       
     case off:
+      turnDustExtractorOff();
       closeGate();
       break;
   
     case on:
       openGate();
+      turnDustExtractorOn();
+      break;
+
+      case error:
+      turnDustExtractorOff();
       break;
   }
 }
 
 void closeGate()
 {
+  Serial.print("closeGate");
   unsigned long startTime;
   startTime=millis();
   
@@ -92,6 +107,7 @@ void closeGate()
 
 void openGate()
 {
+  Serial.print("openGate");
   unsigned long startTime;
   startTime=millis();
   
@@ -167,7 +183,7 @@ bool isMachineRunning()
   double Irms = emon1.calcIrms(1480);  // Calculate Irms only
   Serial.println(Irms);             // Irms
 
-  bool isRunning= (Irms > 15);
+  bool isRunning= (Irms > 10);
   if(isRunning)
     Serial.print("Is Running");
     else
@@ -188,28 +204,33 @@ bool isGateFullyClosed()
 
 void turnDustExtractorOn()
 {
+  Serial.print("turnDustExtractorOn");
   digitalWrite(pin_relais, HIGH);
 }
 
 void turnDustExtractorOff()
 {
+  Serial.print("turnDustExtractorOff");
   digitalWrite(pin_relais, LOW);
 }
 
 
 void servoOpen()
 {
+    Serial.print("servoOpen");
     servo.write(180);
 }
 
 void servoStop()
 {
+    Serial.print("servoStop");
     servo.write(90);
-    delay(100); // wait for current to settle
+    delay(500); // wait for current to settle
 }
 
 void servoClose()
 {
+    Serial.print("servoClose");
     servo.write(0);
 }
 
