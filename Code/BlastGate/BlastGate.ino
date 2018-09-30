@@ -31,13 +31,14 @@ int lastServoSpeed   =-1;
 status theStatus;
 
 void setup()
-{
+{ 
   theStatus = automatic;  
   emon1.current ( pin_current_sensor, 111.1);             // Current: input pin, calibration.
   pinMode(pin_openSwitch, INPUT_PULLUP);
   pinMode(pin_closeSwitch, INPUT_PULLUP);
   pinMode(pin_button, INPUT_PULLUP);
   servo.attach(pin_servo);
+  digitalWrite(pin_relais, RELAIS_OFF);         // Set Relais OFF before setting the the pin to output to prevent short relais clatter on power up
   pinMode(pin_relais, OUTPUT);
   pinMode(pin_led_blue, OUTPUT);
   pinMode(pin_led_green, OUTPUT);
