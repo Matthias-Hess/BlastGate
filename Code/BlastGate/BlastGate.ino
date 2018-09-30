@@ -24,6 +24,9 @@ const int pin_led_blue         =  9;
 const int pin_led_green        = 10;
 const int pin_led_red          = 11;
 
+#define RELAIS_ON LOW
+#define RELAIS_OFF HIGH
+
 int lastServoSpeed   =-1;
 status theStatus;
 
@@ -205,13 +208,13 @@ bool isGateFullyClosed()
 void turnDustExtractorOn()
 {
   Serial.print("turnDustExtractorOn");
-  digitalWrite(pin_relais, HIGH);
+  digitalWrite(pin_relais, RELAIS_ON);
 }
 
 void turnDustExtractorOff()
 {
   Serial.print("turnDustExtractorOff");
-  digitalWrite(pin_relais, LOW);
+  digitalWrite(pin_relais, RELAIS_OFF);
 }
 
 
