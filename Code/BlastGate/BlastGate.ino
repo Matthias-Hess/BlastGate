@@ -187,7 +187,7 @@ status toggle(status theStatus)
 
 bool isMachineRunning()
 {
-  if(millis<waitMsBeforeUsingSensor && !hasBooted)
+  if(millis()<waitMsBeforeUsingSensor && !hasBooted)
   {
     return false;
   }
