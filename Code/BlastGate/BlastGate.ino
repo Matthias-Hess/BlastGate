@@ -23,12 +23,15 @@ const int pin_relais           =  6;
 const int pin_led_blue         =  9;
 const int pin_led_green        = 10;
 const int pin_led_red          = 11;
+const int waitMsBeforeUsingSensor = 5000;
+const double sensorThreshold = 3.0d;
 
 #define RELAIS_ON LOW
 #define RELAIS_OFF HIGH
 
 int lastServoSpeed   =-1;
 status theStatus;
+bool hasBooted = false;
 
 void setup()
 { 
@@ -184,10 +187,19 @@ status toggle(status theStatus)
 
 bool isMachineRunning()
 {
+  if(millis<waitMsBeforeUsingSensor && !hasBooted)
+  {
+    return false;
+  }
+  else
+  {
+    hasBooted=true;
+  }
+  
   double Irms = emon1.calcIrms(1480);  // Calculate Irms only
   Serial.println(Irms);             // Irms
 
-  bool isRunning= (Irms > 10);
+  bool isRunning= (Irms > sensorThreshold);
   if(isRunning)
     Serial.print("Is Running");
     else
